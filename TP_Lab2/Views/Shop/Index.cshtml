@@ -1,8 +1,33 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    Layout = "";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<hr />
+<h2 style="text-align: center;"><strong>Авторизация</strong></h2>
+<hr />
+
+@using (Html.BeginForm("Index", "Shop", FormMethod.Post))
+{
+    <table style="height: 85px; margin-top: 50px;" width="615" align="center">
+        <tbody>
+            <tr>
+                <td style="width: 274.453px; text-align: right; padding-right: 20px;"><strong>Логин:</strong></td>
+                <td style="width: 286.547px; text-align: left; padding-left: 20px;"><input type="text" placeholder="Ваш логин" name="login"/></td>
+            </tr>
+            <tr>
+                <td style="width: 274.453px; text-align: right; padding-right: 20px;"><strong>Пароль:</strong></td>
+                <td style="width: 286.547px; text-align: left; padding-left: 20px;"><input type="text" placeholder="Ваш пароль" name="password"/></td>
+            </tr>
+        </tbody>
+    </table>
+    <table style="margin-top: 20px; height: 39px;" width="611" align="center">
+        <tbody>
+            <tr>
+                <td style="width: 274.078px; text-align: right; padding-right: 20px;"><button name="action" value="log">Войти</button></td>
+                <td style="width: 282.922px; padding-left: 20px;"><button name="action" value="reg">Зарегистрироваться</button></td>
+            </tr>
+        </tbody>
+    </table>
+}
+
+<p style="text-align: center; color: red;">{}</p>

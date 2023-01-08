@@ -1,0 +1,54 @@
+﻿@{
+    ViewData["Title"] = "Корзина";
+}
+
+<p><input style="text-align: left;" hidden="" type="text" value="null" /></p>
+<hr />
+<h2 style="text-align: center;"><strong>Корзина</strong></h2>
+<hr />
+<p>{}</p>
+<table align="center">
+    <tbody>
+        <tr>
+            <td style="text-align: center;" hidden="">id</td>
+            <td style="text-align: center;">N</td>
+            <td style="text-align: center;">Название</td>
+            <td style="text-align: center;">Тип</td>
+            <td style="text-align: center;">Цена за шт.</td>
+            <td style="text-align: center;">Количество</td>
+        </tr>
+        <tr>
+            <td style="text-align: center;" hidden="">{}</td>
+            <td style="text-align: center;">{}</td>
+            <td style="text-align: center;">{}</td>
+            <td style="text-align: center;">{}</td>
+            <td style="text-align: center;">{}</td>
+            <td style="text-align: center;">{}</td>
+            <td style="width: 94px; height: 18px; text-align: center;"><input type="submit" value="x" /></td>
+        </tr>
+    </tbody>
+</table>
+<table style="margin-top: 20px;" align="right">
+    <tbody>
+        <tr>
+            <td style="text-align: right;">Сумма покупки:</td>
+            <td style="text-align: right;">{}</td>
+        </tr>
+        <tr>
+            <td style="text-align: right;">Ваша персональная<br />скидка:</td>
+            <td style="text-align: right;">{}</td>
+        </tr>
+        <tr>
+            <td style="text-align: right;">Итог:</td>
+            <td style="text-align: right;">{}</td>
+        </tr>
+    </tbody>
+</table>
+<table style="margin-top: 120px;" align="center">
+    <tbody>
+        <tr>
+            <td style="text-align: right; padding-right: 20px"><input type="submit" value="Купить" /></td>
+            <td style="text-align: right; padding-left: 20px"><input type="submit" value="Отмена" /></td>
+        </tr>
+    </tbody>
+</table>

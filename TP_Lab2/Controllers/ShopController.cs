@@ -15,6 +15,37 @@ namespace TP_Lab2.Controllers
             return View();
         }
 
+        [HttpPost]
+        public IActionResult Index(string login, string password, string action)
+        {
+            //Actions
+            if (action == "log")
+            {
+                //login actions
+                return RedirectToAction("Catalog");
+            }
+            else if (action == "reg")
+            {
+                //registration actions
+                return View();
+            }
+            else
+            {
+                //write error info
+                return View();
+            }
+        }
+
+        public IActionResult Purchase()
+        {
+            return View();
+        }
+
+        public IActionResult Catalog()
+        {
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
