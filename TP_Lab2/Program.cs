@@ -1,7 +1,13 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using TP_Lab2.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<ShopContext>(options => 
+    options.UseNpgsql("Host=localhost;Port=5432;Database=shop_db;Username=postgres;Password=root"));
 
 var app = builder.Build();
 

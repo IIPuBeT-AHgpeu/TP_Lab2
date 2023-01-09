@@ -8,9 +8,8 @@ namespace TP_Lab2.Models
         public DbSet<Person> Persons { get; set; }
         public DbSet<Purchase> Purchases { get; set; }
 
-        public ShopContext()
+        public ShopContext(DbContextOptions<ShopContext> options) : base(options)
         {
-            //
         }
     }
 }

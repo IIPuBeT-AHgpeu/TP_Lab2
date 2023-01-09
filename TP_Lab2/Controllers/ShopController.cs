@@ -6,9 +6,10 @@ namespace TP_Lab2.Controllers
 {
     public class ShopController : Controller
     {
-        public ShopController()
+        private ShopContext _db;
+        public ShopController(ShopContext context)
         {
-            //add dbcontext
+            _db = context;
         }
 
         public IActionResult Index()
