@@ -111,9 +111,7 @@ namespace TP_Lab2.Controllers
         {
             ViewBag.PersonId = personId.ToString();
 
-            List<Product> products = new List<Product>();//get products from db
-            products.Add(new Product() { Name = "Gachi", Price = 300, Id = 2 });//test
-            products.Add(new Product() { Name = "Muchi", Price = 300, Id = 48 });//test
+            List<Product> products = _db.Products.ToList();
 
             return View(products);
         }
