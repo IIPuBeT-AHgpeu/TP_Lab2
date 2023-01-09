@@ -1,4 +1,5 @@
-﻿@{
+﻿@model CatalogViewModel
+@{
     ViewData["Title"] = "Каталог";
 }
 
@@ -6,28 +7,29 @@
 <hr />
 <h2 style="text-align: center;"><strong>Каталог товаров</strong></h2>
 <hr />
-<p>{}</p>
+<p hidden>@Model.PersonId</p>
 <table style="" align="center">
     <tbody>
-        <tr style="">
-            <td style="text-align: center;" hidden="">id</td>
-            <td style="text-align: center;">N</td>
+        <tr>
+            <td style="text-align: center;" hidden>id</td>
             <td style="text-align: center;">Название</td>
             <td style="text-align: center;">Тип</td>
             <td style="text-align: center;">Цена</td>
             <td style="text-align: center;">Количество</td>
         </tr>
-        <tr style="">
-            <td style="text-align: center;" hidden="">{}</td>
-            <td style="text-align: center;">{}</td>
-            <td style="text-align: center;">{}</td>
-            <td style="text-align: center;">{}</td>
-            <td style="text-align: center;">{}</td>
+        @foreach (var product in Model.Products)
+        {
+            <tr>
+            <td style="text-align: center;" hidden>product.Id</td>
+            <td style="text-align: center;">product.Name</td>
+            <td style="text-align: center;">product.Type</td>
+            <td style="text-align: center;">product.Price</td>
             <td style="text-align: center;"><input max="100" min="0" step="1" type="number" value="0" /></td>
             <td style="width: 94px; height: 18px; text-align: center;">
                 <input type="submit" value="Изменить" />
             </td>
-        </tr>
+            </tr>
+        }
     </tbody>
 </table>
 <p style="text-align: center; margin-top: 20px"><input type="submit" value="Оформить заказ" /></p>

@@ -21,6 +21,7 @@ namespace TP_Lab2.Controllers
         {
             Person? person = new Person();//find person in DB
             person.Password = "123";//test
+            person.Id = 1;//test
 
             if (action == "reg")
             {
@@ -56,7 +57,12 @@ namespace TP_Lab2.Controllers
                     if (person.Password == password)
                     {
                         //redirect
-                        return RedirectToAction("Catalog");
+                        CatalogViewModel model = new CatalogViewModel()
+                        {
+                            PersonId = person.Id,
+                            //Products
+                        };
+                        return RedirectToAction("Catalog", model);
                     }
                     else
                     {
@@ -74,12 +80,14 @@ namespace TP_Lab2.Controllers
 
         public IActionResult Purchase()
         {
+            //
             return View();
         }
 
-        public IActionResult Catalog()
+        public IActionResult Catalog(CatalogViewModel model)
         {
-            return View();
+            //
+            return View(model);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
