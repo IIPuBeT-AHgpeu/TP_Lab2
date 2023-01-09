@@ -75,13 +75,31 @@ namespace TP_Lab2.Controllers
         public IActionResult Purchase(int personId)
         {
             Console.WriteLine($"It works! {personId}");//debug
-            //
-            return View();
+
+            ViewBag.PersonId = personId;
+            PurchaseViewModel model = new PurchaseViewModel();//get products and counts from DB
+            
+            List<ProductInPurchase> products = new List<ProductInPurchase>();//test
+            products.Add(new ProductInPurchase() { Product = new Product() { Name = "Gachi", Price = 300, Id = 2 }, Count = 3 });//test
+            products.Add(new ProductInPurchase() { Product = new Product() { Name = "Muchi", Price = 300, Id = 48 }, Count = 7 });//test
+            model.Products = products;//test
+
+            //count of results parameters
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult Purchase(int productId, int personId)
+        {
+            Console.WriteLine($"product: {productId}");//debug
+            //Delete record
+
+            return RedirectToAction("Purchase", new { personId = personId });
         }
 
         public IActionResult Catalog(int personId)
         {
-            //
             ViewBag.PersonId = personId.ToString();
 
             List<Product> products = new List<Product>();//get products from db
@@ -94,9 +112,6 @@ namespace TP_Lab2.Controllers
         [HttpPost]
         public IActionResult Catalog(int num, int productId, string personId)
         {
-            //
-            ViewBag.PersonId = personId.ToString();
-
             //add products to purchase
             Console.WriteLine($"{num};;;{productId};;;{personId}");//debug
 
