@@ -6,7 +6,6 @@
 <hr />
 <h2 style="text-align: center;"><strong>Корзина</strong></h2>
 <hr />
-<input hidden name="personId" value="@ViewBag.PersonId" />
 <table align="center">
     <tbody>
         <tr>
@@ -26,7 +25,7 @@
             
             @using(Html.BeginForm("Purchase", "Shop", FormMethod.Post))
                 {
-                    <td style="text-align: center; padding: 10px"><input type="submit" value="x" /></td>
+                    <td style="text-align: center; padding: 10px"><input type="submit" value="x"/></td>
                     <td style="text-align: center;" hidden><input name="productId" value="@product.Product.Id"/></td>                    
                     <td style="text-align: center; padding: 10px" hidden><input name="personId" value="@ViewBag.PersonId" /></td>
                 }                
@@ -51,15 +50,23 @@
     </tbody>
 </table>
 
-<table style="margin-top: 20px;" align="center">
+<table align="center" style="margin-top: 20px;">
     <tbody>
-        <tr>           
-                @using(Html.BeginForm("Catalog", "Shop", FormMethod.Get))
+        <tr>
+            <td style="padding-right: 10px">
+                @using (Html.BeginForm("Catalog", "Shop", FormMethod.Get))
                 {
-                    <td><input type="submit" value="Назад" size="50" style="padding-top: 20px;"/></td>
-                    <td hidden><input name="personId" value="@ViewBag.PersonId"/></td>
+                <input type="submit" value="Назад" size="50" />
+                <input hidden name="personId" value="@ViewBag.PersonId" />
                 }
-            <td><input type="submit" value="Купить" size="50"/></td>
-        </tr>   
+            </td>
+            <td style="padding-right: 10px">
+                @using (Html.BeginForm("DeletePurchase", "Shop", FormMethod.Get))
+                {
+                <input type="submit" value="Купить" size="50" />
+                <input hidden name="personId" value="@ViewBag.PersonId" />
+                }
+            </td>
+        </tr>
     </tbody>
 </table>

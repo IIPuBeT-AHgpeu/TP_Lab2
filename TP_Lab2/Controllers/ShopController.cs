@@ -98,6 +98,14 @@ namespace TP_Lab2.Controllers
             return RedirectToAction("Purchase", new { personId = personId });
         }
 
+        [HttpGet]
+        public IActionResult DeletePurchase(int personId)
+        {
+            //delete purchase
+
+            return RedirectToAction("Catalog", new { personId = personId });
+        }
+
         public IActionResult Catalog(int personId)
         {
             ViewBag.PersonId = personId.ToString();
