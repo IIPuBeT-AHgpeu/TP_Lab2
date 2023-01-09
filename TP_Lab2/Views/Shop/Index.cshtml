@@ -12,11 +12,11 @@
         <tbody>
             <tr>
                 <td style="width: 274.453px; text-align: right; padding-right: 20px;"><strong>Логин:</strong></td>
-                <td style="width: 286.547px; text-align: left; padding-left: 20px;"><input type="text" placeholder="Ваш логин" name="login"/></td>
+                <td style="width: 286.547px; text-align: left; padding-left: 20px;"><input type="text" placeholder="Ваш логин" name="login" value="@ViewBag.Login"/></td>
             </tr>
             <tr>
                 <td style="width: 274.453px; text-align: right; padding-right: 20px;"><strong>Пароль:</strong></td>
-                <td style="width: 286.547px; text-align: left; padding-left: 20px;"><input type="text" placeholder="Ваш пароль" name="password"/></td>
+                <td style="width: 286.547px; text-align: left; padding-left: 20px;"><input type="text" placeholder="Ваш пароль" name="password" value="@ViewBag.Password"/></td>
             </tr>
         </tbody>
     </table>
@@ -30,4 +30,4 @@
     </table>
 }
 
-<p style="text-align: center; color: red;">{}</p>
+<p style="text-align: center; color: @ViewBag.MessageColor;">@ViewBag.Message</p>

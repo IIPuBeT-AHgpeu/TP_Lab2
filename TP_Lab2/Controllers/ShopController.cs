@@ -8,6 +8,7 @@ namespace TP_Lab2.Controllers
     {
         public ShopController()
         {
+            //add dbcontext
         }
 
         public IActionResult Index()
@@ -18,22 +19,57 @@ namespace TP_Lab2.Controllers
         [HttpPost]
         public IActionResult Index(string login, string password, string action)
         {
-            //Actions
-            if (action == "log")
+            Person? person = new Person();//find person in DB
+            person.Password = "123";//test
+
+            if (action == "reg")
             {
-                //login actions
-                return RedirectToAction("Catalog");
-            }
-            else if (action == "reg")
-            {
-                //registration actions
+                if (person == null)
+                {
+                    //create new person
+                    ViewBag.MessageColor = "black";
+                    ViewBag.Message = "Вы успешно зарегистрировались!";
+                }
+                else
+                {
+                    ViewBag.Login = login;
+                    ViewBag.Password = password;
+                    ViewBag.MessageColor = "red";
+                    ViewBag.Message = "Пользователь с таким логином уже существует!";
+
+                }
                 return View();
             }
             else
             {
-                //write error info
-                return View();
+                if (person == null)
+                {
+                    ViewBag.Login = login;
+                    ViewBag.Password = password;
+                    ViewBag.MessageColor = "red";
+                    ViewBag.Message = "Пользователь с таким логином не найден!";
+                    
+                    return View();
+                }
+                else
+                {
+                    if (person.Password == password)
+                    {
+                        //redirect
+                        return RedirectToAction("Catalog");
+                    }
+                    else
+                    {
+                        ViewBag.Login = login;
+                        ViewBag.Password = password;
+                        ViewBag.MessageColor = "red";
+                        ViewBag.Message = "Неверный пароль!";
+
+                        return View();
+                    }
+                }
             }
+           
         }
 
         public IActionResult Purchase()
