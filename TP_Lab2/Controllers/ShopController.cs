@@ -56,13 +56,7 @@ namespace TP_Lab2.Controllers
                 {
                     if (person.Password == password)
                     {
-                        //redirect
-                        CatalogViewModel model = new CatalogViewModel()
-                        {
-                            PersonId = person.Id,
-                            //Products
-                        };
-                        return RedirectToAction("Catalog", model);
+                        return RedirectToAction("Catalog", "Shop", new { personId = person.Id });
                     }
                     else
                     {
@@ -78,16 +72,35 @@ namespace TP_Lab2.Controllers
            
         }
 
-        public IActionResult Purchase()
+        public IActionResult Purchase(int personId)
         {
+            Console.WriteLine($"It works! {personId}");//debug
             //
             return View();
         }
 
-        public IActionResult Catalog(CatalogViewModel model)
+        public IActionResult Catalog(int personId)
         {
             //
-            return View(model);
+            ViewBag.PersonId = personId.ToString();
+
+            List<Product> products = new List<Product>();//get products from db
+            products.Add(new Product() { Name = "Gachi", Price = 300, Id = 2 });//test
+            products.Add(new Product() { Name = "Muchi", Price = 300, Id = 48 });//test
+
+            return View(products);
+        }
+
+        [HttpPost]
+        public IActionResult Catalog(int num, int productId, string personId)
+        {
+            //
+            ViewBag.PersonId = personId.ToString();
+
+            //add products to purchase
+            Console.WriteLine($"{num};;;{productId};;;{personId}");//debug
+
+            return RedirectToAction("Catalog", new { personId = personId });
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
