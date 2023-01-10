@@ -20,15 +20,14 @@ namespace TP_Lab2.Controllers
         [HttpPost]
         public IActionResult Index(string login, string password, string action)
         {
-            Person? person = new Person();//find person in DB
-            person.Password = "123";//test
-            person.Id = 1;//test
+            Person? person = _db.Persons.FirstOrDefault(p => p.Login == login);
 
             if (action == "reg")
             {
                 if (person == null)
                 {
-                    //create new person
+                    _db.Persons.Add(new Person() { Login = login, Password = password, Name = "", PurchasesSum = 0 });
+                    _db.SaveChanges();
                     ViewBag.MessageColor = "black";
                     ViewBag.Message = "Вы успешно зарегистрировались!";
                 }
@@ -75,17 +74,9 @@ namespace TP_Lab2.Controllers
 
         public IActionResult Purchase(int personId)
         {
-            Console.WriteLine($"It works! {personId}");//debug
-
             ViewBag.PersonId = personId;
-            PurchaseViewModel model = new PurchaseViewModel();//get products and counts from DB
-            
-            List<ProductInPurchase> products = new List<ProductInPurchase>();//test
-            products.Add(new ProductInPurchase() { Product = new Product() { Name = "Gachi", Price = 300, Id = 2 }, Count = 3 });//test
-            products.Add(new ProductInPurchase() { Product = new Product() { Name = "Muchi", Price = 300, Id = 48 }, Count = 7 });//test
-            model.Products = products;//test
 
-            //count of results parameters
+            PurchaseViewModel model = GetPurchases(_db.Persons.FirstOrDefault(p => p.Id == personId));
 
             return View(model);
         }
@@ -93,8 +84,9 @@ namespace TP_Lab2.Controllers
         [HttpPost]
         public IActionResult Purchase(int productId, int personId)
         {
-            Console.WriteLine($"product: {productId}");//debug
-            //Delete record
+            Purchase pur = _db.Purchases.FirstOrDefault(p => p.ProductId == productId && p.PersonId == personId);
+            _db.Purchases.Remove(pur);
+            _db.SaveChanges();
 
             return RedirectToAction("Purchase", new { personId = personId });
         }
@@ -102,7 +94,14 @@ namespace TP_Lab2.Controllers
         [HttpGet]
         public IActionResult DeletePurchase(int personId)
         {
-            //delete purchase
+            Person person = _db.Persons.FirstOrDefault(p => p.Id == personId);
+            PurchaseViewModel model = GetPurchases(person);
+
+            Purchase[] purs = _db.Purchases.Where(p => p.PersonId == personId).ToArray();
+            _db.Purchases.RemoveRange(purs);
+            person.PurchasesSum += model.Result;
+
+            _db.SaveChanges();
 
             return RedirectToAction("Catalog", new { personId = personId });
         }
@@ -117,10 +116,19 @@ namespace TP_Lab2.Controllers
         }
 
         [HttpPost]
-        public IActionResult Catalog(int num, int productId, string personId)
+        public IActionResult Catalog(int num, int productId, int personId)
         {
-            //add products to purchase
-            Console.WriteLine($"{num};;;{productId};;;{personId}");//debug
+            Purchase? exist = _db.Purchases.FirstOrDefault(p => p.ProductId == productId && p.PersonId == personId);
+
+            if (exist == null)
+            {
+                _db.Purchases.Add(new Purchase() { PersonId = personId, ProductId = productId, ProductNum = num });
+            }
+            else
+            {
+                exist.ProductNum += num;
+            }
+            _db.SaveChanges();
 
             return RedirectToAction("Catalog", new { personId = personId });
         }
@@ -129,6 +137,33 @@ namespace TP_Lab2.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public float GetSale(float sum)
+        {
+            if (sum < 10000) return 0.01F;
+            else if (sum >= 10000 && sum < 30000) return 0.03f;
+            else return 0.05F;
+        }
+        public PurchaseViewModel GetPurchases(Person person)
+        {
+            PurchaseViewModel model = new PurchaseViewModel();
+
+            var purchaseList = from purchase in _db.Purchases
+                               join product in _db.Products on purchase.ProductId equals product.Id
+                               where purchase.PersonId == person.Id
+                               select new ProductInPurchase()
+                               {
+                                   Product = product,
+                                   Count = purchase.ProductNum
+                               };
+
+            model.Products = purchaseList.ToList();
+
+            model.Sale = GetSale(person.PurchasesSum);
+            model.CalculateResultParameters();
+
+            return model;
         }
     }
 }
