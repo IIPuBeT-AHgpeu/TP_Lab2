@@ -76,7 +76,9 @@ namespace TP_Lab2.Controllers
         {
             ViewBag.PersonId = personId;
 
-            PurchaseViewModel model = GetPurchases(_db.Persons.FirstOrDefault(p => p.Id == personId));
+            Person person = _db.Persons.FirstOrDefault(p => p.Id == personId);
+            
+            PurchaseViewModel model = ConstructPurchaseViewModel(person);
 
             return View(model);
         }
@@ -95,7 +97,8 @@ namespace TP_Lab2.Controllers
         public IActionResult DeletePurchase(int personId)
         {
             Person person = _db.Persons.FirstOrDefault(p => p.Id == personId);
-            PurchaseViewModel model = GetPurchases(person);
+
+            PurchaseViewModel model = ConstructPurchaseViewModel(person);
 
             Purchase[] purs = _db.Purchases.Where(p => p.PersonId == personId).ToArray();
             _db.Purchases.RemoveRange(purs);
@@ -145,10 +148,9 @@ namespace TP_Lab2.Controllers
             else if (sum >= 10000 && sum < 30000) return 0.03f;
             else return 0.05F;
         }
-        public PurchaseViewModel GetPurchases(Person person)
-        {
-            PurchaseViewModel model = new PurchaseViewModel();
 
+        private PurchaseViewModel ConstructPurchaseViewModel(Person person)
+        {           
             var purchaseList = from purchase in _db.Purchases
                                join product in _db.Products on purchase.ProductId equals product.Id
                                where purchase.PersonId == person.Id
@@ -158,9 +160,14 @@ namespace TP_Lab2.Controllers
                                    Count = purchase.ProductNum
                                };
 
-            model.Products = purchaseList.ToList();
+            return CalculateResults(purchaseList.ToList(), person.PurchasesSum);
+        }
 
-            model.Sale = GetSale(person.PurchasesSum);
+        public PurchaseViewModel CalculateResults(List<ProductInPurchase> products, float personSum)
+        {
+            PurchaseViewModel model = new PurchaseViewModel() { Products = products };
+
+            model.Sale = GetSale(personSum);
             model.CalculateResultParameters();
 
             return model;
