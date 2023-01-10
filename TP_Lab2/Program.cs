@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using TP_Lab2.Models;
 
 var builder = WebApplication.CreateBuilder(args);
